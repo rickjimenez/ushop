@@ -1,5 +1,6 @@
-import React, { Component } from "react";
-import "./App.css";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import './App.css';
 
 class App extends Component {
   // Initialize state
@@ -12,7 +13,7 @@ class App extends Component {
 
   getPasswords = () => {
     // Get the passwords and store them in state
-    fetch("/api/passwords")
+    fetch('/api/passwords')
       .then(res => res.json())
       .then(passwords => this.setState({ passwords }));
   };
@@ -55,4 +56,8 @@ class App extends Component {
   }
 }
 
-export default App;
+const mapStateToProps = state => ({
+  currentUser: state.auth.currentUser,
+});
+
+export default connect(mapStateToProps)(App);
