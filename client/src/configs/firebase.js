@@ -1,8 +1,11 @@
+// This import loads the firebase namespace along with all its type information.
 import * as firebase from 'firebase/app';
+
+// These imports load individual services into the firebase namespace.
 import 'firebase/auth';
+import 'firebase/firestore';
 
 // get data from env vars
-
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_API_KEY,
   authDomain: process.env.REACT_APP_AUTH_DOMAIN,
@@ -12,8 +15,6 @@ const firebaseConfig = {
   messagingSenderId: process.env.REACT_APP_SENDER_ID,
   appId: process.env.REACT_APP_APP_ID,
 };
-
-console.log(firebaseConfig);
 
 firebase.initializeApp(firebaseConfig);
 
