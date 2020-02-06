@@ -1,72 +1,58 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useToasts } from 'react-toast-notifications';
 import { auth } from '../configs/firebase';
-import {
-  Box,
-  Button,
-  CheckBox,
-  Grommet,
-  Form,
-  FormField,
-  RadioButtonGroup,
-  RangeInput,
-  Select,
-  TextArea,
-} from 'grommet';
-import { grommet } from 'grommet/themes';
+import { Box, Button, Main, Form, FormField, Image } from 'grommet';
 
 const SignUp = () => {
   const { addToast } = useToasts();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
 
-  const handleSubmit = e => {
-    e.preventDefault();
-
-    auth.createUserWithEmailAndPassword(email, password).catch(err => {
-      // handle errors
-      console.log(err.code);
-      addToast(err.message, {
+  const handleSubmit = data => {
+    const { value } = data;
+    if (value.password === value.passwordConfirmation) {
+      auth.createUserWithEmailAndPassword(value.email, value.password).catch(err => {
+        // handle errors
+        console.log(err.code);
+        addToast(err.message, {
+          appearance: 'error',
+          autoDismiss: true,
+        });
+      });
+    } else {
+      addToast('Passwords do not match', {
         appearance: 'error',
         autoDismiss: true,
       });
-    });
+    }
   };
 
   return (
-    <div>
-      <Box fill align="center" justify="center">
-        <Box width="medium">
-          <Form
-            onReset={event => console.log(event)}
-            onSubmit={({ value, touched }) => console.log('Submit', value, touched)}
-          >
-            <FormField label="Email" name="email" required />
-            <Box direction="row" justify="between" margin={{ top: 'medium' }}>
-              <Button label="Cancel" />
-              <Button type="reset" label="Reset" />
-              <Button type="submit" label="Update" primary />
-            </Box>
-          </Form>
-        </Box>
+    <Main justify="center" align="center" pad="large" fill>
+      <Box
+        width="medium"
+        elevation="medium"
+        round="small"
+        animation="fadeIn"
+        pad="small"
+      >
+        <Image
+          fit="contain"
+          src="/logo192.png"
+        />
+        <Form onSubmit={handleSubmit}>
+          <FormField label="Email" name="email" required />
+          <FormField label="Password" name="password" type="password" required />
+          <FormField
+            label="Password Confirmation"
+            name="passwordConfirmation"
+            type="password"
+            required
+          />
+          <Box direction="row" justify="center" margin={{ top: 'medium', bottom: 'medium' }}>
+            <Button type="submit" label="Sign Up" primary />
+          </Box>
+        </Form>
       </Box>
-
-      <form onSubmit={handleSubmit}>
-        <input
-          placeholder="email"
-          type="text"
-          value={email}
-          onChange={e => setEmail(e.target.value)}
-        />
-        <input
-          placeholder="password"
-          type="password"
-          value={password}
-          onChange={e => setPassword(e.target.value)}
-        />
-        <button type="submit">Send</button>
-      </form>
-    </div>
+    </Main>
   );
 };
 
