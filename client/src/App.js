@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import firebase from './configs/firebase';
 import './App.css';
+
+console.log(firebase);
 
 class App extends Component {
   // Initialize state

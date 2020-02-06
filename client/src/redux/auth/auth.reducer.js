@@ -1,4 +1,4 @@
-import authTypes from './auth.actions';
+import authTypes from './auth.types';
 const initState = {
   currentUser: null,
 };
